@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+  strict: true,
+    routes: [
     {
       path: "/",
       name: "home",
@@ -12,12 +14,26 @@ const router = createRouter({
     {
       path: "/about",
       name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/AboutView.vue"),
     },
   ],
-});
+  scrollBehavior: () => ({ left: 0, top: 0 })
+})
 
-export default router;
+export const resetRouter = () => {
+  const resetWhiteNameList = ['Redirect', 'Login', 'NoFind', 'Root']
+  router.getRoutes().forEach((route) => {
+    const { name } = route
+    if (name && !resetWhiteNameList.includes(name)) {
+      router.hasRoute(name) && router.removeRoute(name)
+    }
+  })
+}
+
+console.log('ROUTER - INITIALIZED 🎉')
+
+export const setupRouter = app => {
+  app.use(router)
+}
+
+export default router

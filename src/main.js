@@ -1,14 +1,32 @@
-import { createApp } from "vue";
-import { createPinia } from "pinia";
+import { createApp } from "vue"
 
-import App from "./App.vue";
-import router from "./router";
+// Enter Point
+import App from "./App.vue"
 
-import "./assets/main.css";
+// WindiCSS
+import "virtual:windi.css"
+import "virtual:windi-devtools"
 
-const app = createApp(App);
+// Element Plus
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
-app.use(createPinia());
-app.use(router);
+// Custom Styles
+import "./styles/index.scss"
 
-app.mount("#app");
+import { setupStore } from "./stores"
+import { setupRouter } from "./router"
+
+const setupApp = () => {
+  const app = createApp(App)
+
+  setupStore(app)
+
+  setupRouter(app)
+
+  app.use(ElementPlus)
+
+  app.mount("#app")
+}
+
+setupApp()
