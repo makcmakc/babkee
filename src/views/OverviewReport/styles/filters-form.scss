@@ -1,0 +1,29 @@
+.el-form--inline .el-form-item {
+  margin: 0;
+}
+
+.el-form--default.el-form--label-top .el-form-item .el-form-item__label {
+  margin-bottom: 3px;
+}
+
+.el-select {
+  width: 100%;
+}
+
+.el-form-item{
+  position: relative;
+  flex-grow: 0;
+  margin-bottom: 3px;
+  display: flex;
+  flex-direction: column;
+  width: calc(20% - 0.5rem);
+
+  @media(max-width: 1080px){
+    flex-grow: 1;
+    width: calc(50% - 1rem);
+  }
+
+  @media(max-width: 768px){
+    width: calc(100% - 1rem);
+  }
+}// el-form-item

@@ -1,19 +1,21 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router"
+import Header from "@/app/components/Header.vue"
 </script>
 
 <template>
   <div>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-    </nav>
+    <Header />
 
     <RouterView />
   </div>
 </template>
 
 <style scoped>
+.el-header {
+  background: #fff;
+}
+
 nav {
   width: 100%;
   font-size: 12px;

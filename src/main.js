@@ -14,8 +14,8 @@ import 'element-plus/dist/index.css'
 // Custom Styles
 import "./styles/index.scss"
 
-import { setupStore } from "./stores"
-import { setupRouter } from "./router"
+import { setupStore } from "@/app/store"
+import { setupRouter } from "@/app/router"
 
 const setupApp = () => {
   const app = createApp(App)
