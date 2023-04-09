@@ -1,5 +1,5 @@
 <template>
-  <main class="relative w-full px-0">
+  <main class="relative w-full px-0" style="height: 100vh">
     <div class="flex items-center absolute right-4 top-4"></div>
 
       <div class=" relative h-full mx-auto">
@@ -20,7 +20,7 @@
                 >
               </div>
               <div
-                class="mt-5 font-normal text-white dark:text-gray-500 -enter-x"
+                class="mt-3 font-normal text-white dark:text-gray-500 -enter-x"
               >
                 Backstage management system
               </div>
@@ -52,29 +52,9 @@
               enter-x
             "
           >
-            <h2 class="text-2xl mb-4 font-bold text-white text-center">
-              Sign In
-            </h2>
-            <el-form
-              label-position="top"
-              label-width="100px"
-            >
-              <el-form-item label="Username">
-                <el-input placeholder="Please input username" />
-              </el-form-item>
-              <el-form-item label="Password">
-                <el-input placeholder="Please input password" />
-              </el-form-item>
-              <div class="flex justify-between items-center mb-8">
-                <el-checkbox label="Remember Me" name="type" />
-                <el-link type="primary" :underline="false">
-                  Forget password
-                </el-link>
-              </div>
-              <el-form-item class="w-full">
-                <el-button type="primary" class="font-600 w-full">Sign In</el-button>
-              </el-form-item>
-            </el-form>
+
+            <login-form />
+
           </div>
         </div>
         
@@ -83,8 +63,13 @@
   </main>
 </template>
 
-<script>
-export default {}
+<script setup>
+import { ref } from "vue";
+import LoginForm from "./LoginForm.vue";
+
+const username = ref()
+const password = ref()
+
 </script>
 
 <style lang="scss">

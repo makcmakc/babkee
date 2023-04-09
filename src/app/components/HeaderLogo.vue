@@ -79,7 +79,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .app-logo {
   width: 120px;
   height: 100%;
@@ -98,10 +98,11 @@ tspan {
   height: 100%;
   padding: 0 20px;
   margin-left: -20px;
-}
 
-.logo-wrapper:hover {
-  /* background-color: #ecf5ff; */
-  /* background-color: var(--el-menu-hover-bg-color); */
+  @media(max-width: 480px) {
+    // overflow: clip;
+    // width: 45px;
+    padding: 0 10px;
+  }
 }
 </style>

@@ -1,33 +1,176 @@
 import { defineStore } from "pinia"
+import { getRowChildrenNameByType, rowChildrenSettings } from "./helpers"
+
+
+
+
+const fetchVisibleColumnsFromLocalStorage = ({commit}) => {
+  const localStorageVisibleColumns = localStorage.getItem('visibleColumns');
+  if (localStorageVisibleColumns) {
+    const columns = JSON.parse(localStorageVisibleColumns);
+    if (!columns.includes('adgroup')) columns.push('adgroup'); //adgroup is always visible
+    commit('setVisibleColumns', columns);
+  }
+};
+
+const saveVisibleColumnsToLocalStorage = ({getters}) => {
+  let visibleColumns = [];
+  for (let [key, value] of Object.entries(getters.getVisibleColumns)) {
+    if (value === true) {
+      visibleColumns.push(key);
+    }
+  }
+
+  localStorage.setItem('visibleColumns', JSON.stringify(visibleColumns));
+};
+
+
+
+
+
+const prepareOverviewReport = (overviewReport) => {
+  overviewReport.rows.forEach((row) => {
+    prepareRowParent(row);
+    prepareRowChildren(row);
+  });
+
+  if (overviewReport.rowTotal) {
+    addRowToTop(overviewReport, overviewReport.rowTotal);
+  }
+
+  if (overviewReport.rowAverage) {
+    addRowToTop(overviewReport, overviewReport.rowAverage);
+    addRowToBottom(overviewReport, overviewReport.rowAverage);
+  }
+
+  if (overviewReport.rowTotal) {
+    addRowToBottom(overviewReport, overviewReport.rowTotal);
+  }
+
+  return overviewReport;
+};
+
+const prepareRowParent = (row, type = null, rowIdPostfix = '') => {
+  row.row_id = row.id + rowIdPostfix;
+  row.children = [];
+  row.type = type;
+  row.childrenType = null;
+  row.isChild = false;
+};
+
+const prepareRowChildren = (row) => {
+  rowChildrenSettings().forEach((reportChildSettings) => {
+    if (row[reportChildSettings.name] !== undefined && row[reportChildSettings.name] !== null) {
+      row[reportChildSettings.name].forEach((rowChild) => {
+        rowChild.row_id = row.row_id + '_' + rowChild.id;
+        rowChild.type = reportChildSettings.type;
+        rowChild.isChild = true;
+      });
+    }
+  });
+};
+
+
+const overviewReport = {
+  rows: [
+    {
+      date: '2022-06-22 - Wed',
+      id: '12987122',
+      name: 'Tom',
+      amount1: '234',
+      amount2: '3.2',
+      amount3: 10,
+      bought: 111.870,
+    },
+    {
+      date: '2022-06-22 - Wed',
+      id: '12987123',
+      name: 'Tom',
+      amount1: '165',
+      amount2: '4.43',
+      amount3: 12,
+      bought: 133.034,
+    },
+    {
+      date: '2022-06-22 - Wed',
+      id: '12987124',
+      name: 'Tom',
+      amount1: '324',
+      amount2: '1.9',
+      amount3: -1,
+      bought: 125.454,
+    },
+    {
+      date: '2022-06-22 - Wed',
+      id: '12987125',
+      name: 'Tom',
+      amount1: '621',
+      amount2: '2.2',
+      amount3: 17,
+      bought: 188.800,
+    },
+    {
+      date: '2022-06-22 - Wed',
+      id: '12987126',
+      name: 'Tom',
+      amount1: '539',
+      amount2: '4.1',
+      amount3: 15,
+      bought: 115.181,
+    },
+  ]
+}
+
+
 
 export const useOverviewReportStore = defineStore('overviewReport', {
   state: () => {
     return {
       loading: false,
       filtersAvailable: {},
-      filters: {},
-      variantColors: [
-
-        [64, 158, 255], //primary - blue
-        [103, 194, 58], //success - green
-        [230, 162, 60], //warning - orange
-        [245, 108, 108], //danger - red
-        // [247, 137, 137], //danger - red
-
-        [156, 3, 247], // purple
-        [19, 206, 102], // lime
-        [64,158,255], // blue
-        [245, 111, 111], // red
-        [230, 162, 60], // orange
-        [53, 185, 197], // turquoise
-        [239, 204, 162], // biscuit
-        [67, 56, 202], // indigo
-        [154, 187, 29], // yellow
-        [228, 53, 188], // pink
-        [4, 120, 87], // emerald
-        [3, 105, 161], // sky
-        // [65, 47, 97], // dark gray
-      ] 
+      filters: {
+        dateRange: [],
+        marketIdIn:[],
+        siteProjectIdIn: [],
+        siteIdIn:[],
+        sourceIdIn: [],
+        deviceIdIn: [],
+        partnerAccountIdIn: [],
+        buyerIdIn: [],
+        teamIdIn: []
+      },    
+      visibleColumns: [],
+      report: [],
+      groupOptions: [
+        {
+          value: 'date',
+          label: 'Date'
+        },
+        {
+          value: 'buyerId',
+          label: 'Buyer'
+        },
+        {
+          value: 'feedId',
+          label: 'Revenue'
+        },
+        {
+          value: 'siteId',
+          label: 'Site'
+        },
+        {
+          value: 'teamId',
+          label: 'Team'
+        },
+        {
+          value: 'sourceId',
+          label: 'Traffic Source'
+        },
+        {
+          value: 'siteProjectId',
+          label: 'Project'
+        }
+      ],
     }
   } ,
   getters: {
@@ -35,5 +178,37 @@ export const useOverviewReportStore = defineStore('overviewReport', {
   },
   actions: {
     // your actions and mutations here, also check the offical Pinia Docs
+    fetchReport() {
+      let report = prepareOverviewReport(overviewReport);
+
+      this.report = report;
+    },
+
+    setReportRowChildrenByType(payload) {
+      let row_id = payload.row_id
+      let childrenType = payload.childrenType
+      let childrenTypeName = getRowChildrenNameByType(childrenType)
+
+      // console.log(payload, this.report.rows)
+
+      this.report.rows.forEach((row, i) => {
+        if (row.row_id === row_id) {
+          let children = childrenType !== null && row[childrenTypeName] !== undefined ? row[childrenTypeName] : []
+          // let children = [
+          //   {
+          //     date: '2022-06-22 - Wed',
+          //     id: '12987126',
+          //     name: 'Tom',
+          //     amount1: '539',
+          //     amount2: '4.1',
+          //     amount3: 15,
+          //     bought: 115.181,
+          //   }
+          // ]
+          let newRow = {...row, children, childrenType}
+          this.report.rows.splice(i, 1, newRow)
+        }
+      })
+    },     
   }
 })

@@ -41,9 +41,10 @@
     </div>
 
     <el-table
-      :data="tableData"
+      :data="store.report.rows"
       border
       :size="tabelSize"
+      :summary-method="getSummaries"
       show-summary
       :indent="0"
       class="overview-report-table"
@@ -68,8 +69,8 @@
 
       <el-table-column prop="amount3" sortable label="Bought">
         <template #default="scope">
-          <div class="text-red-500 underline decoration-red-500 cursor-pointer" @click="showChildren(scope.row, 'date')">
-            {{ scope.row.amount3 }}
+          <div class="text-red-500 underline decoration-red-500 cursor-pointer" @click="showChildren(scope.row, 'device')">
+            {{ scope.row.bought !== null ? numberWithCommas(scope.row.bought) : 'NA' }}
           </div>
         </template>
       </el-table-column>
@@ -78,15 +79,20 @@
 
       <el-table-column prop="amount2" sortable label="Cost">
         <template #default="scope">
-          <div class="text-blue-500 underline decoration-blue-500 cursor-pointer">
-            {{ scope.row.amount3 }}
-          </div>
+          <template v-if="scope.row.children">
+            <div class="text-blue-500 underline decoration-blue-500 cursor-pointer" @click="showChildren(scope.row, 'source')">
+              {{ scope.row.amount3 !== null ? numberWithCommas(Number.parseFloat(scope.row.amount3).toFixed(2)) : 'NA' }}
+            </div>
+          </template>
+          <template v-else>
+            {{ scope.row.name }}
+          </template>
         </template>
       </el-table-column>
 
       <el-table-column prop="amount3" sortable label="CPC">
         <template #default="scope">
-          <div class="text-blue-500 cursor-pointer">
+          <div class="text-blue-500">
             {{ scope.row.amount3 }}
           </div>
         </template>
@@ -98,8 +104,8 @@
 
       <el-table-column prop="amount3" sortable label="Earned">
         <template #default="scope">
-          <div class="text-blue-500 underline decoration-blue-500 cursor-pointer">
-            {{ scope.row.amount3 }}
+          <div class="text-blue-500 underline decoration-blue-500 cursor-pointer" @click="showChildren(scope.row, 'feed')">
+            {{ scope.row.amount3 !== null ? numberWithCommas(Number.parseFloat(scope.row.amount3).toFixed(2)) : 'NA' }}
           </div>
         </template>
       </el-table-column>
@@ -116,14 +122,14 @@
 
       <el-table-column prop="amount3" sortable label="Profit">
         <template #default="scope">
-          <div
+          <div 
+            @click="showChildren(scope.row, 'market')"
             class="cursor-pointer underline"
-            :class="
-              scope.row.amount3 < 0
+              :class="scope.row.amount3 < 0
               ? 'text-red-500 decoration-red-500'
               : 'text-green-500 decoration-green-500'"
             >
-            {{ scope.row.amount3 }}
+             {{ scope.row.amount3 !== null ? numberWithCommas(Number.parseFloat(scope.row.amount3).toFixed(2)) : 'NA' }}
           </div>
         </template>
       </el-table-column>
@@ -131,12 +137,13 @@
       <el-table-column prop="amount3" sortable label="Margin">
         <template #default="scope">
           <div
+            @click="showChildren(scope.row, 'team')"
             class="cursor-pointer underline"
             :class="scope.row.amount3 < 0
               ? 'text-red-500 decoration-red-500'
               : 'text-green-500 decoration-green-500'"
             >
-            {{ scope.row.amount3 }}
+            {{ scope.row.amount3 !== null ? numberWithCommas((Number.parseFloat(scope.row.amount3)).toFixed(2)) + '%' : 'NA' }}
           </div>
         </template>
       </el-table-column>
@@ -149,25 +156,18 @@
 </template>
 
 
-<script lang="ts" setup>
-import type { TableColumnCtx } from 'element-plus/es/components/table/src/table-column/defaults'
+<script setup>
+// import type { TableColumnCtx } from 'element-plus/es/components/table/src/table-column/defaults'
 import { Compass, RefreshRight, Setting } from '@element-plus/icons-vue'
 import { ref } from 'vue-demi'
 
+import { useOverviewReportStore } from '../store/index'
 
-interface Product {
-  id: string
-  name: string
-  amount1: string
-  amount2: string
-  amount3: number
-  date: string
-}
 
-interface SummaryMethodProps<T = Product> {
-  columns: TableColumnCtx<T>[]
-  data: T[]
-}
+const store = useOverviewReportStore()
+
+// console.log(store.loading)
+
 
 let loading = false
 let tabelSize = ref('default')
@@ -176,22 +176,34 @@ const handleSize = (command) => (tabelSize.value = command)
 
 const showChildren = (row, childrenType) => {
   let row_id = row.id
-  console.log(row)
   childrenType = row.childrenType !== childrenType ? childrenType : null
 
-  // this.$store.commit('overviewReport/setReportRowChildrenByType', {row_id, childrenType});
+  // store.
+
+  store.setReportRowChildrenByType({row_id, childrenType})
 }
+
+
+  store.fetchReport()
+
+
+
+  const numberWithCommas = x => {
+    let parts = x.toString().split(".")
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return parts.join(".")
+  }
 
   const tableRowClassName = ({row}) => {
     return 'row-type--' + (row.type ? row.type: 'parent')
   }
 
-  const getSummaries = (param: SummaryMethodProps) => {
+  const getSummaries = (param) => {
     const { columns, data } = param
-    const sums: string[] = []
+    const sums = []
     columns.forEach((column, index) => {
       if (index === 0) {
-        sums[index] = 'Total Cost'
+        sums[index] = 'Total'
         return
       }
       const values = data.map((item) => Number(item[column.property]))
@@ -212,51 +224,9 @@ const showChildren = (row, childrenType) => {
     return sums
   }
 
-
-
-const tableData: Product[] = [
-  {
-    id: '12987122',
-    name: 'Tom',
-    amount1: '234',
-    amount2: '3.2',
-    amount3: 10,
-    date: '2022-06-22 - Wed',
-  },
-  {
-    date: '2022-06-22 - Wed',
-    id: '12987123',
-    name: 'Tom',
-    amount1: '165',
-    amount2: '4.43',
-    amount3: 12,
-  },
-  {
-    date: '2022-06-22 - Wed',
-    id: '12987124',
-    name: 'Tom',
-    amount1: '324',
-    amount2: '1.9',
-    amount3: -1,
-  },
-  {
-    date: '2022-06-22 - Wed',
-    id: '12987125',
-    name: 'Tom',
-    amount1: '621',
-    amount2: '2.2',
-    amount3: 17,
-  },
-  {
-    date: '2022-06-22 - Wed',
-    id: '12987126',
-    name: 'Tom',
-    amount1: '539',
-    amount2: '4.1',
-    amount3: 15,
-  },
-]
+  console.log('store.report.rows', store.report)
 </script>
+
 
 <style lang="scss">
 .el-table__header {

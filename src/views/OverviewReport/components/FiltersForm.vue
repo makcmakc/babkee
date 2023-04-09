@@ -1,5 +1,5 @@
 <template>
-  <el-form class="lg:flex-nowrap flex-wrap flex mb-0 p-2 bg-white rounded flex gap-2" :inline="false" :label-position="'top'">
+  <el-form class="lg:flex-nowrap flex-wrap flex mb-4 mt-4 p-2 rounded flex gap-2" :inline="false" :label-position="'top'">
 
     <el-form-item label="Partner" :size="'large'">
       <el-select
@@ -120,8 +120,8 @@
       </el-select>
     </el-form-item>    
 
-    <el-form-item label="&nbsp;" class="load-report-btn flex-none lg:flex-1 items-end lg:mt-0 -mt-4">
-      <el-button type="success" size="large" @click="submitHandler">
+    <el-form-item class="load-report-btn flex-none mt-6 <xs:mt-2 lg:flex-1 items-end">
+      <el-button type="success" class="<xs:w-full" size="large" @click="submitHandler">
         <span class="font-semibold">Load Report </span><el-icon class="ml-2"><Refresh class="text-white" /></el-icon>
       </el-button>
     </el-form-item>

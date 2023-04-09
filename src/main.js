@@ -8,14 +8,18 @@ import "virtual:windi.css"
 import "virtual:windi-devtools"
 
 // Element Plus
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+import ElementPlus from "element-plus"
+import "element-plus/dist/index.css"
 
 // Custom Styles
 import "./styles/index.scss"
 
 import { setupStore } from "@/app/store"
 import { setupRouter } from "@/app/router"
+
+// Firebase
+// import {firebase} from "firebase/app";
+
 
 const setupApp = () => {
   const app = createApp(App)

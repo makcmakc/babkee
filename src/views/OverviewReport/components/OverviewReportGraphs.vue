@@ -1,11 +1,11 @@
 <template>
   <div class="overview-report-graphs p-2 mt-2">
 
-    <div class="overview-report-graphs-container">
+    <div class="overview-report-graphs-container gap-2">
 
       <div class="overview-report-graphs-group">
         <div class="overview-report-graphs-group__title"><span>Project</span></div>
-        <div class="pr-2 pl-2 pt-4 pb-2 flex w-full">
+        <div class="pr-2 pl-2 pt-6 pb-2 flex w-full">
           <div class="overview-report-graphs-graph">
             <OverviewReportGraphDonut :chartName="'Profit'" :chartData="data" />
           </div>
@@ -17,7 +17,7 @@
 
       <div class="overview-report-graphs-group">
         <div class="overview-report-graphs-group__title"><span>Project</span></div>
-        <div class="pr-2 pl-2 pt-4 pb-2 flex w-full">
+        <div class="pr-2 pl-2 pt-6 pb-2 flex w-full">
           <div class="overview-report-graphs-graph">
             <OverviewReportGraphDonut :chartName="'Profit'" :chartData="data" />
           </div>
@@ -29,7 +29,7 @@
       
       <div class="overview-report-graphs-group">
         <div class="overview-report-graphs-group__title"><span>Project</span></div>
-        <div class="pr-2 pl-2 pt-4 pb-2 flex w-full">
+        <div class="pr-2 pl-2 pt-6 pb-2 flex w-full">
           <div class="overview-report-graphs-graph">
             <OverviewReportGraphDonut :chartName="'Profit'" :chartData="data" />
           </div>
@@ -41,7 +41,7 @@
       
       <div class="overview-report-graphs-group">
         <div class="overview-report-graphs-group__title"><span>Project</span></div>
-        <div class="pr-2 pl-2 pt-4 pb-2 flex w-full">
+        <div class="pr-2 pl-2 pt-6 pb-2 flex w-full">
           <div class="overview-report-graphs-graph">
             <OverviewReportGraphDonut :chartName="'Profit'" :chartData="data" />
           </div>
@@ -76,9 +76,4 @@ const data = {
     }
   ]
 }
-
 </script>
-
-<style>
-
-</style>

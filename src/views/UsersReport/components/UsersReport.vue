@@ -1,6 +1,6 @@
 <template>
   <div class="p-2 mt-2 bg-white rounded">
-    <div class="el-table__header flex justify-between items-center">
+    <div class="el-table__header flex justify-between items-center rounded-t-sm border-l-1 border-r-1 border-t-1 pl-3 pr-3 pt-2 pb-1 rounded-t-md flex justify-between items-center">
       <div class="el-table__title font-semibold pb-2 text-base">Users</div>
 
       <div class="flex items-center justify-end">
@@ -106,12 +106,16 @@
 </template>
 
 <script setup>
-import { Refresh, ScaleToOriginal } from '@element-plus/icons-vue'
+import { Refresh, Setting, RefreshRight, ScaleToOriginal } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 const handleEdit = (index, row) => {
   console.log(index, row)
 }
 const handleDelete = (index, row) => {
+  console.log(index, row)
+}
+
+const handleClose = (index, row) => {
   console.log(index, row)
 }
 
@@ -149,3 +153,9 @@ const tableData = [
   },
 ]
 </script>
+
+<style scoped>
+.el-table__header {
+  background: #F5F7FA;
+}
+</style>

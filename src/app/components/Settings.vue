@@ -9,6 +9,15 @@
     </el-divider>
 
     <div class="configuration__options flex mt-8">
+      <!-- <el-switch
+        v-model="value2"
+        class="mt-2"
+        style="--el-switch-on-color: #303133; --el-switch-off-color: #303133"
+        inline-prompt
+        :active-icon="Sunny"
+        :inactive-icon="Moon"
+      /> -->
+
       <el-radio-group v-model="theme">
 
         <!-- <el-tooltip content="Light Theme" placement="top"> -->
@@ -243,12 +252,15 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Setting } from '@element-plus/icons-vue'
+import { Setting, Moon, Sunny } from '@element-plus/icons-vue'
 
 const drawer = ref(false)
 const value1 = ref(false)
 const theme = ref(false)
 const navigation = ref(false)
+const value2 = ref(true)
+
+
 </script>
 
 <style lang="scss" scoped>
