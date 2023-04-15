@@ -1,6 +1,8 @@
 <template>
   <div class="p-2 mt-2 bg-white rounded">
-    <div class="el-table__header flex justify-between items-center rounded-t-sm border-l-1 border-r-1 border-t-1 pl-3 pr-3 pt-2 pb-1 rounded-t-md flex justify-between items-center">
+    <div
+      class="el-table__header flex justify-between items-center rounded-t-sm border-l-1 border-r-1 border-t-1 pl-3 pr-3 pt-2 pb-1 rounded-t-md flex justify-between items-center"
+    >
       <div class="el-table__title font-semibold pb-2 text-base">Users</div>
 
       <div class="flex items-center justify-end">
@@ -48,7 +50,10 @@
       <el-table-column label="Updated" prop="updated" />
       <el-table-column label="Actions" width="150">
         <template #default="scope">
-          <el-button size="small" type="primary" @click="handleEdit(scope.$index, scope.row)"
+          <el-button
+            size="small"
+            type="primary"
+            @click="handleEdit(scope.$index, scope.row)"
             >Edit</el-button
           >
           <el-popconfirm
@@ -64,8 +69,65 @@
     </el-table>
   </div>
 
-  <el-dialog v-model="dialogVisible" title="New User" width="50%" :before-close="handleClose">
-    <el-form label-width="120px" label-position="top" class="demo-ruleForm" :size="formSize">
+  <div class="m-4">
+    <h1>Bitcoin Price Index</h1>
+
+    <section v-if="errored">
+      <p>
+        We're sorry, we're not able to retrieve this information at the moment,
+        please try back later
+      </p>
+    </section>
+
+    <section v-else>
+      <div v-if="loading">Loading...</div>
+
+      <div v-else>
+        <div v-for="currency in info" :key="currency" class="currency">
+          {{ currency.description }}:
+          <span class="lighten">
+            {{ currency.rate_float }} {{ currencydecimal }}
+          </span>
+        </div>
+
+        {{ fire }}
+      </div>
+    </section>
+  </div>
+
+  <el-form
+    ref="ruleFormRef"
+    :model="ruleForm"
+    :rules="rules"
+    label-width="120px"
+    class="demo-ruleForm mr-4 mt-5 w-1/3"
+    :size="formSize"
+    status-icon
+  >
+    <el-form-item label="First name" prop="name">
+      <el-input v-model="firstName" />
+    </el-form-item>
+    <el-form-item label="Last Name" prop="name">
+      <el-input v-model="lastName" />
+    </el-form-item>
+
+    <el-form-item>
+      <el-button @click="submitHandler">Submit</el-button>
+    </el-form-item>
+  </el-form>
+
+  <el-dialog
+    v-model="dialogVisible"
+    title="New User"
+    width="50%"
+    :before-close="handleClose"
+  >
+    <el-form
+      label-width="120px"
+      label-position="top"
+      class="demo-ruleForm"
+      :size="formSize"
+    >
       <el-form-item label="Name" prop="name">
         <el-input></el-input>
       </el-form-item>
@@ -98,16 +160,26 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="submitForm(ruleFormRef)">Create</el-button>
+        <el-button type="primary" @click="submitForm(ruleFormRef)"
+          >Create</el-button
+        >
         <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
 </template>
 
+
 <script setup>
-import { Refresh, Setting, RefreshRight, ScaleToOriginal } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import {
+  Refresh,
+  Setting,
+  RefreshRight,
+  ScaleToOriginal,
+} from "@element-plus/icons-vue"
+import { ref } from "vue"
+import axios from "axios"
+
 const handleEdit = (index, row) => {
   console.log(index, row)
 }
@@ -119,9 +191,20 @@ const handleClose = (index, row) => {
   console.log(index, row)
 }
 
+const firstName = ref()
+const lastName = ref()
+
+let info = ref(null)
+
+const submitHandler = () => {
+  axios
+    .get("https://api.coindesk.com/v1/bpi/currentprice.json")
+    .then((response) => (info = response.data.bpi))
+}
+
 const dialogVisible = ref(false)
 
-let tableSize = ref('')
+let tableSize = ref("")
 
 const handleSize = (command) => {
   tableSize = command
@@ -130,32 +213,34 @@ const handleSize = (command) => {
 
 const tableData = [
   {
-    email: 'admin@site.com',
-    roles: ['ROLE_ADMIN', 'ROLE_USER'],
-    name: '',
-    surname: '',
-    image: 'https://www.talonx.com/wp-content/uploads/2014/06/Photography-Web-Design.jpg',
-    description: '',
-    editor: 'draft',
-    created: '2016-05-01',
-    updated: '2016-05-01',
+    email: "admin@site.com",
+    roles: ["ROLE_ADMIN", "ROLE_USER"],
+    name: "",
+    surname: "",
+    image:
+      "https://www.talonx.com/wp-content/uploads/2014/06/Photography-Web-Design.jpg",
+    description: "",
+    editor: "draft",
+    created: "2016-05-01",
+    updated: "2016-05-01",
   },
   {
-    email: 'editor@site.com',
-    roles: ['ROLE_USER'],
-    name: '',
-    surname: '',
-    image: 'https://www.talonx.com/wp-content/uploads/2014/06/Photography-Web-Design.jpg',
-    description: '',
-    editor: 'draft',
-    created: '2016-05-01',
-    updated: '2016-05-01',
+    email: "editor@site.com",
+    roles: ["ROLE_USER"],
+    name: "",
+    surname: "",
+    image:
+      "https://www.talonx.com/wp-content/uploads/2014/06/Photography-Web-Design.jpg",
+    description: "",
+    editor: "draft",
+    created: "2016-05-01",
+    updated: "2016-05-01",
   },
 ]
 </script>
 
 <style scoped>
 .el-table__header {
-  background: #F5F7FA;
+  background: #f5f7fa;
 }
 </style>

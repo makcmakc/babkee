@@ -14,6 +14,9 @@ import "element-plus/dist/index.css"
 // Custom Styles
 import "./styles/index.scss"
 
+// Modules
+import axios from '@/app/utils/axios'
+
 import { setupStore } from "@/app/store"
 import { setupRouter } from "@/app/router"
 
@@ -29,6 +32,11 @@ const setupApp = () => {
   setupRouter(app)
 
   app.use(ElementPlus)
+
+  // app.use(axios, {
+  //     app,
+  //     baseUrl: 'https://cataas.com/',
+  // })
 
   app.mount("#app")
 }

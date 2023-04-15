@@ -16,6 +16,11 @@ const router = createRouter({
       component: () => import("@/views/AdGroupReport/components/AdGroupReport.vue"),
     },
     {
+      path: "/tq-dashboard",
+      name: "tq-dashboard",
+      component: () => import("@/views/TqDashboard/components/TqDashboard.vue"),
+    },    
+    {
       path: "/users",
       name: "users",
       component: () => import("@/views/UsersReport/components/UsersReport.vue"),
