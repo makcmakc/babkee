@@ -1,22 +1,21 @@
 <template>
-  <h2 text-2xl mb-4 font-bold text-white text-center>Sign In</h2>
   <el-form label-position="top" label-width="100px">
-    <el-form-item label="Email">
+    <el-form-item label="Email" style="width: 100%">
       <el-input v-model="email" placeholder="Please input email" />
     </el-form-item>
-    <el-form-item label="Password">
+    <el-form-item label="Password" style="width: 100%">
       <el-input
         v-model="password"
         placeholder="Please input password"
         type="password"
       />
     </el-form-item>
-    <div class="flex justify-between items-center mb-8">
+    <div flex justify-between items-center mb-8>
       <el-checkbox label="Remember Me" name="type" />
       <el-link type="primary" :underline="false"> Forgot password </el-link>
     </div>
-    <el-form-item class="w-full">
-      <el-button type="primary" class="font-600 w-full" @click="submitHandler">Sign In</el-button>
+    <el-form-item w-full>
+      <el-button type="primary" font-600 w-full @click="submitHandler">Sign In</el-button>
     </el-form-item>
   </el-form>
 </template>

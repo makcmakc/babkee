@@ -69,53 +69,6 @@
     </el-table>
   </div>
 
-  <div class="m-4">
-    <h1>Bitcoin Price Index</h1>
-
-    <section v-if="errored">
-      <p>
-        We're sorry, we're not able to retrieve this information at the moment,
-        please try back later
-      </p>
-    </section>
-
-    <section v-else>
-      <div v-if="loading">Loading...</div>
-
-      <div v-else>
-        <div v-for="currency in info" :key="currency" class="currency">
-          {{ currency.description }}:
-          <span class="lighten">
-            {{ currency.rate_float }} {{ currencydecimal }}
-          </span>
-        </div>
-
-        {{ fire }}
-      </div>
-    </section>
-  </div>
-
-  <el-form
-    ref="ruleFormRef"
-    :model="ruleForm"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm mr-4 mt-5 w-1/3"
-    :size="formSize"
-    status-icon
-  >
-    <el-form-item label="First name" prop="name">
-      <el-input v-model="firstName" />
-    </el-form-item>
-    <el-form-item label="Last Name" prop="name">
-      <el-input v-model="lastName" />
-    </el-form-item>
-
-    <el-form-item>
-      <el-button @click="submitHandler">Submit</el-button>
-    </el-form-item>
-  </el-form>
-
   <el-dialog
     v-model="dialogVisible"
     title="New User"

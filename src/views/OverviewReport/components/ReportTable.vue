@@ -4,7 +4,7 @@
       <div class="el-table__title font-semibold pb-1 text-base">Daily Overview</div>
 
       <div class="flex items-center justify-end">
-        <div style="height: 1.6rem" class="cursor-pointer">
+        <div style="height: 1.6rem" class="cursor-pointer" @click="updateReport">
           <el-icon><RefreshRight /></el-icon>
         </div>
         <div class="h-5 ml-4">
@@ -38,7 +38,7 @@
 
       <el-table-column prop="impressions" sortable label="Impr" />
 
-      <el-table-column prop="amount3" sortable label="Bought">
+      <el-table-column prop="bought" sortable label="Bought">
         <template #default="scope">
           <div class="text-red-500 underline decoration-red-500 cursor-pointer" @click="showChildren(scope.row, 'device')">
             {{ scope.row.bought ? numberWithCommas(scope.row.bought) : 'NA' }}
@@ -126,7 +126,6 @@
 
 
 <script setup>
-// import type { TableColumnCtx } from 'element-plus/es/components/table/src/table-column/defaults'
 import { Compass, RefreshRight, Setting } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue'
 
@@ -135,21 +134,13 @@ import SizeSelector from './SizeSelector.vue'
 import ColumnsSelector from './ColumnsSelector.vue'
 
 
-const store = useOverviewReportStore()
+  const store = useOverviewReportStore()
 
+  onMounted(async () => {
+    await store.fetchReport()
+  })
 
-
-
-
-
-onMounted(async () => {
-  await store.fetchReport()
-})
-
-
-const loading = store.loading
-
-
+  const updateReport = () => store.fetchReport()
 
   const showChildren = (row, childrenType) => {
     let row_id = row.id
@@ -173,7 +164,7 @@ const loading = store.loading
     return 'row-type--' + (row.type ? row.type: 'parent')
   }
 
-  const getSummaries = (param) => {
+  const getSummaries = param => {
     const { columns, data } = param
     const sums = []
     columns.forEach((column, index) => {
@@ -205,5 +196,9 @@ const loading = store.loading
 .el-table__header {
   // padding: 6px; bg-gray-100 bg-opacity-90
   background: #F5F7FA;
+}
+
+.el-loading-spinner .path {
+  stroke: #67C23A;
 }
 </style>

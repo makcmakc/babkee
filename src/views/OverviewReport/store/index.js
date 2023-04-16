@@ -115,7 +115,21 @@ export const useOverviewReportStore = defineStore('overviewReport', {
         buyerIdIn: [],
         teamIdIn: []
       },    
-      visibleColumns: [],
+      visibleColumns: {
+        impressions: true,
+        bought: true,
+        adCTR: true,
+        cost: true,
+        CPC: true,
+        CPA: false,
+        sold: true,
+        earned: true,
+        opCTR: true,
+        RPS: true,
+        RPC: true,
+        profit: true,
+        margin: true,    
+      },
       report: [],
       groupOptions: [
         {
@@ -168,8 +182,9 @@ export const useOverviewReportStore = defineStore('overviewReport', {
   } ,
   getters: {
     // your getters here, check the Offical Pinia above
-    getReport: () => this.report,
-    getRows: () => this.report?.rows ?? [],
+    getReport: state => state.report,
+    getRows: state => state.report?.rows ?? [],
+    getVisibleColumns: state => state.visibleColumns,
   },
   actions: {
     async fetchReport() {
@@ -179,24 +194,8 @@ export const useOverviewReportStore = defineStore('overviewReport', {
       const items = []
 
       const overviewReportRows = await getDocs(collection(fireStore, "overview"))
-      overviewReportRows.forEach((doc) => {
-        // const data = {
-        //   id: doc.data().id,
-        //   date: doc.data().date,
-        //   impressions: doc.data().impressions,
-        //   bought: doc.data().bought,
-        //   adCTR: doc.data().adCTR,
-        //   cost: doc.data().cost,
-        //   CPC: doc.data().CPC,
-        //   sold: doc.data().sold,
-        //   earned: doc.data().earned,
-        //   opCTR: doc.data().opCTR,
-        //   RPS: doc.data().RPS,
-        //   RPC: doc.data().RPC,
-        //   profit: doc.data().profit,
-        //   margin: doc.data().margin,      
-        // }
-        items.push({ ...this.rows, ...doc.data() } )
+      overviewReportRows.forEach(row => {
+        items.push({ ...this.rows, ...row.data() })
       })
 
       this.report.rows = items

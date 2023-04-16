@@ -28,8 +28,7 @@
           </div>
         </div>
 
-        <div class="flex __right  w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12"
-        >
+        <div class="flex __right h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
           <div
             class="
               relative
@@ -51,10 +50,12 @@
               w-full
               enter-x
             "
-          >
+            >
+            <h2 text-2xl mb-4 font-bold text-white text-center>Sign In</h2>
 
             <login-form />
 
+            <login-with />
           </div>
         </div>
         
@@ -66,6 +67,7 @@
 <script setup>
 import { ref } from "vue";
 import LoginForm from "./LoginForm.vue";
+import LoginWith from "./LoginWith.vue";
 
 const username = ref()
 const password = ref()

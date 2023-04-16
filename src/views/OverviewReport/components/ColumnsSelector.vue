@@ -5,21 +5,18 @@
     popper-class="columns-select-popover"
     v-model="popoverVisible"
     class="columns-selector"
-    width="240px"
+    width="280px"
   >
 
-  <el-checkbox-group >
-    <!-- v-model="selectedColumns" class="checkbox-group" @change="handleCheckChange" -->
-    <!-- <template v-for="item in availableColumns">
-      <el-checkbox :label="item" :key="item" class="checkbox" :disabled="item === 'adgroup'">{{formatName(item)}}</el-checkbox>
-    </template> -->
-    <el-checkbox v-model="checked1" label="Option 1" size="large" />
-    <el-checkbox v-model="checked2" label="Option 2" size="large" />
+  <el-checkbox-group v-model="selectedColumns" class="checkbox-group" @change="handleCheckChange">
+    <template v-for="item in availableColumns" :key="item" >
+      <el-checkbox :label="item" class="checkbox">{{ item }}</el-checkbox>
+    </template>
+
   </el-checkbox-group>
-<!-- :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" -->
 
   <div class="columns-selector__footer">
-    <el-checkbox  class="check-all">Check all</el-checkbox>
+    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" class="check-all">Check all</el-checkbox>
     <el-button type="primary">Apply</el-button>
   </div>
 
@@ -32,12 +29,47 @@
 
 <script setup>
 import { Setting } from '@element-plus/icons-vue'
-import { ref } from "vue"
+import { computed, onMounted, ref } from "vue"
+import { useOverviewReportStore } from '../store/index'
 
-const checked1 = ref(null)
-const checked2 = ref(null)
+
+let isIndeterminate = ref(true)
+let checkAll = ref(null)
+let selectedColumns = ref([])
 
 const popoverVisible = ref(null)
+
+
+const store = useOverviewReportStore()
+
+
+  const availableColumns = computed(() => {
+    return Object.keys(store.getVisibleColumns).filter(item => item !== true)
+  })
+
+  const visibleColumns = computed(() => {
+    return Object.keys(store.getVisibleColumns).filter(key => store.getVisibleColumns[key] === true)
+  })
+
+  const handleCheckAllChange = val => {
+
+    selectedColumns = val ? visibleColumns : ['CPC', 'RPS']
+    isIndeterminate = false
+
+    console.log('VAL ', selectedColumns)
+  }
+
+
+  const handleCheckChange = value => {
+    // isIndeterminate = value.length > 0 && value.length < availableColumns.length
+    console.log(value)
+
+    checkAll = (value.length === availableColumns.length) ? false : (value.length === 0)  ? true : checkAll
+  }
+
+  onMounted(() => {
+    selectedColumns = ['CPC', 'RPS']
+  })
 
 </script>
 
@@ -48,8 +80,36 @@ const popoverVisible = ref(null)
     display: flex;
     justify-content: space-between;
     padding-top: 10px;
-    border-top: 1px solid #ccc;
-    margin-top: 20px;
+    border-top: 1px solid #DCDFE6;
   }
 }
+
+
+:deep() {
+  .checkbox,
+  .check-all {
+    // display: block;
+    margin-bottom: 0.5em;
+    text-transform: capitalize;
+
+    .el-checkbox__label {
+      font-size: 12px;
+    }
+  }
+}
+
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+  border-top: 1px solid #DCDFE6;
+}
+
+.checkbox-group{
+  column-count: 2;
+}
+
 </style>

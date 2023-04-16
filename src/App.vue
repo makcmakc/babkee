@@ -1,36 +1,11 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router"
-import AppLayout from "@/layouts/Layout.vue"
-
-import { ref, onMounted } from "vue"
-
-import { fireStore } from "./firebase/firebaseInit"
-import { collection, getDocs } from "firebase/firestore"
-
-let items = []
-
-onMounted(async () => {
-  const querySnapshot = await getDocs(collection(fireStore, "todos"))
-  querySnapshot.forEach((doc) => {
-    // console.log(doc.id, doc.data())
-    const data = {
-      id: doc.id,
-      content: doc.data().content,
-      done: doc.data().done,
-    }
-    items.push(data)
-  })
-
-  // const overviewReportRows = await getDocs(collection(fireStore, "overview"))
-  // overviewReportRows.forEach((doc) => {
-  //   const data = {
-
-  //   }
-  // })
-})
+// import AppLayout from "@/layouts/Layout.vue"
+import Header from '@/app/components/Header.vue'
 </script>
 
 <template>
+  <Header />
   <div>
     <RouterView />
   </div>

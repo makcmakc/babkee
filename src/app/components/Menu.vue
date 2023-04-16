@@ -9,12 +9,15 @@
     <el-menu-item index="1">
       <router-link to="/">Overview</router-link>
     </el-menu-item>
-    <!-- <el-menu-item index="3">
+    <el-menu-item index="3">
       <router-link to="/adgroup">AdGroup Report</router-link>
-    </el-menu-item> -->
+    </el-menu-item>
     <el-menu-item index="6">
       <router-link to="/users">Users</router-link>
     </el-menu-item>
+    <el-menu-item index="4">
+      <router-link to="/tq-dashboard">TQ Dashboard</router-link>
+    </el-menu-item>    
     <el-menu-item index="2">
       <router-link to="/login">Login</router-link>
     </el-menu-item>
