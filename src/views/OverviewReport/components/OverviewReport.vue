@@ -1,16 +1,7 @@
 <template>
-  <div class="mt-2">
-
-    <div class="filters-form p-2">
-      <FiltersForm />
-
-      <div class="filters-form__bottom">
-        <columns-selector />
-      </div>
-    </div>
-
+  <div mt-2 flex flex-col>
+    <FiltersForm />
     <ReportTable />
-
     <OverviewReportGraphs />
   </div>
 </template>
@@ -19,8 +10,6 @@
 import FiltersForm from "./FiltersForm.vue"
 import ReportTable from "./ReportTable.vue"
 import OverviewReportGraphs from "./OverviewReportGraphs.vue"
-import ColumnsSelector from "./ColumnsSelector.vue"
-
 
 </script>
 

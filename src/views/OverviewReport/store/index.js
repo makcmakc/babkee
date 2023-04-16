@@ -95,6 +95,8 @@ const overviewReport = {
   ]
 }
 
+import { fireStore } from "@/firebase/firebaseInit"
+import { collection, getDocs } from "firebase/firestore"
 
 
 export const useOverviewReportStore = defineStore('overviewReport', {
@@ -145,17 +147,60 @@ export const useOverviewReportStore = defineStore('overviewReport', {
           label: 'Project'
         }
       ],
+      tableSize: 'default',
+      rows: {
+        id: null,
+        date: null,
+        impressions: null,
+        bought: null,
+        adCTR: null,
+        cost: null,
+        CPC: null,
+        sold: null,
+        earned: null,
+        opCTR: null,
+        RPS: null,
+        RPC: null,
+        profit: null,
+        margin: null,    
+      }
     }
   } ,
   getters: {
     // your getters here, check the Offical Pinia above
+    getReport: () => this.report,
+    getRows: () => this.report?.rows ?? [],
   },
   actions: {
-    // your actions and mutations here, also check the offical Pinia Docs
-    fetchReport() {
-      let report = prepareOverviewReport(overviewReport);
+    async fetchReport() {
 
-      this.report = report;
+      this.loading = true
+
+      const items = []
+
+      const overviewReportRows = await getDocs(collection(fireStore, "overview"))
+      overviewReportRows.forEach((doc) => {
+        // const data = {
+        //   id: doc.data().id,
+        //   date: doc.data().date,
+        //   impressions: doc.data().impressions,
+        //   bought: doc.data().bought,
+        //   adCTR: doc.data().adCTR,
+        //   cost: doc.data().cost,
+        //   CPC: doc.data().CPC,
+        //   sold: doc.data().sold,
+        //   earned: doc.data().earned,
+        //   opCTR: doc.data().opCTR,
+        //   RPS: doc.data().RPS,
+        //   RPC: doc.data().RPC,
+        //   profit: doc.data().profit,
+        //   margin: doc.data().margin,      
+        // }
+        items.push({ ...this.rows, ...doc.data() } )
+      })
+
+      this.report.rows = items
+      this.loading = false
     },
 
     setReportRowChildrenByType(payload) {

@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-2xl mb-4 font-bold text-white text-center">Sign In</h2>
+  <h2 text-2xl mb-4 font-bold text-white text-center>Sign In</h2>
   <el-form label-position="top" label-width="100px">
     <el-form-item label="Email">
       <el-input v-model="email" placeholder="Please input email" />
@@ -42,7 +42,9 @@ const submitHandler = async () => {
     router.push("/")
   } catch (err) {
     error.value = err.message
-    console.log(err)
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
   }
 }
 </script>

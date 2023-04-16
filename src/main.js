@@ -7,6 +7,11 @@ import App from "./App.vue"
 import "virtual:windi.css"
 import "virtual:windi-devtools"
 
+// UnoCSS
+import 'virtual:uno.css'
+import 'virtual:unocss-devtools'
+
+
 // Element Plus
 import ElementPlus from "element-plus"
 import "element-plus/dist/index.css"
@@ -14,8 +19,6 @@ import "element-plus/dist/index.css"
 // Custom Styles
 import "./styles/index.scss"
 
-// Modules
-import axios from '@/app/utils/axios'
 
 import { setupStore } from "@/app/store"
 import { setupRouter } from "@/app/router"
@@ -32,11 +35,6 @@ const setupApp = () => {
   setupRouter(app)
 
   app.use(ElementPlus)
-
-  // app.use(axios, {
-  //     app,
-  //     baseUrl: 'https://cataas.com/',
-  // })
 
   app.mount("#app")
 }

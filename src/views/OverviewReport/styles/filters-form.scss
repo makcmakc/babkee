@@ -87,9 +87,11 @@
 
 .filters-form {
   // width: 100%;
+  // margin: 10px 0;
 
   &__bottom {
-    // float: right;
+    float: right;
+    margin-right: .5em;
     // margin-right: 30px;
   }
 }

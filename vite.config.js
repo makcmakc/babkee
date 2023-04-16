@@ -7,6 +7,9 @@ import { createHtmlPlugin } from "vite-plugin-html"
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import PurgeIcons from 'vite-plugin-purge-icons'
 
+import UnoCSS from 'unocss/vite'
+
+
 // ROOT
 const root = process.cwd()
 
@@ -20,6 +23,9 @@ export default defineConfig({
     vue(),
     vueJsx(),
     WindiCSS(),
+
+    UnoCSS(),
+
     createSvgIconsPlugin({
       iconDirs: [pathResolve('src/assets/svgs')],
       symbolId: 'icon-[dir]-[name]',

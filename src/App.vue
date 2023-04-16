@@ -31,23 +31,9 @@ onMounted(async () => {
 </script>
 
 <template>
-   <RouterView />
-
-  <!-- <div class="wrapper">
-    <ul class="mt-12">
-      <li v-for="item in items" :key="item.id" class="mb-2">
-        <div class="flex gap-2">
-          <div class="w-12/12 h-18 bg-[#e0ebff] rounded-[7px] flex justify-start items-center px-6">
-            <span id="check1" class="w-7 h-7 bg-white rounded-full border border-white transition-all cursor-pointer hover:border-[#36d344] flex justify-center items-center">
-              <i class="text-white fa fa-check"></i>
-            </span>
-            <div id="strike1" class="text-sm ml-4 text-[#5b7a9d] font-semibold" style="flex: 0 1 100%;">{{ item.content }}</div>
-            <span class="mr-4">{{ item.id }}</span>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div> -->
+  <div>
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
