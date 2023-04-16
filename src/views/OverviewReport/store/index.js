@@ -2,32 +2,6 @@ import { defineStore } from "pinia"
 import { getRowChildrenNameByType, rowChildrenSettings } from "./helpers"
 
 
-
-
-const fetchVisibleColumnsFromLocalStorage = ({commit}) => {
-  const localStorageVisibleColumns = localStorage.getItem('visibleColumns');
-  if (localStorageVisibleColumns) {
-    const columns = JSON.parse(localStorageVisibleColumns);
-    if (!columns.includes('adgroup')) columns.push('adgroup'); //adgroup is always visible
-    commit('setVisibleColumns', columns);
-  }
-};
-
-const saveVisibleColumnsToLocalStorage = ({getters}) => {
-  let visibleColumns = [];
-  for (let [key, value] of Object.entries(getters.getVisibleColumns)) {
-    if (value === true) {
-      visibleColumns.push(key);
-    }
-  }
-
-  localStorage.setItem('visibleColumns', JSON.stringify(visibleColumns));
-};
-
-
-
-
-
 const prepareOverviewReport = (overviewReport) => {
   overviewReport.rows.forEach((row) => {
     prepareRowParent(row);
@@ -194,19 +168,9 @@ export const useOverviewReportStore = defineStore('overviewReport', {
       this.report.rows.forEach((row, i) => {
         if (row.row_id === row_id) {
           let children = childrenType !== null && row[childrenTypeName] !== undefined ? row[childrenTypeName] : []
-          // let children = [
-          //   {
-          //     date: '2022-06-22 - Wed',
-          //     id: '12987126',
-          //     name: 'Tom',
-          //     amount1: '539',
-          //     amount2: '4.1',
-          //     amount3: 15,
-          //     bought: 115.181,
-          //   }
-          // ]
           let newRow = {...row, children, childrenType}
           this.report.rows.splice(i, 1, newRow)
+          console.log(this.report.rows)
         }
       })
     },     

@@ -31,11 +31,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- <AppLayout>
-    <RouterView />
-  </AppLayout> -->
-  <!-- <RouterView /> -->
-  <div class="wrapper">
+   <RouterView />
+
+  <!-- <div class="wrapper">
     <ul class="mt-12">
       <li v-for="item in items" :key="item.id" class="mb-2">
         <div class="flex gap-2">
@@ -49,7 +47,7 @@ onMounted(async () => {
         </div>
       </li>
     </ul>
-  </div>
+  </div> -->
 </template>
 
 <style scoped>

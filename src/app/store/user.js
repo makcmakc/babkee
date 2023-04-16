@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { fireDatabase } from "@/firebase/firebaseInit.js"
 
-export const useUserStore = defineStore('user', {
+export const useAuthrStore = defineStore('user', {
   state: () => {
     return {
 

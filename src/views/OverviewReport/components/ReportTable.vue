@@ -224,7 +224,7 @@ const showChildren = (row, childrenType) => {
     return sums
   }
 
-  console.log('store.report.rows', store.report)
+  // console.log('store.report.rows', store.report)
 </script>
 
 
