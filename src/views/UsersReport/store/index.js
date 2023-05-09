@@ -2,20 +2,15 @@ import { defineStore } from "pinia"
 import { fireStore } from "@/firebase/firebaseInit"
 import { collection, getDocs } from "firebase/firestore"
 
-
-export const useUsersStore = defineStore('users', {
+export const useUsersStore = defineStore("users", {
   state: () => {
     return {
-      loading: false, 
+      loading: false,
       users: [],
-      roles: [
-        'ADMIN',
-        'USER',
-        'BUYER'
-      ],
-      tableSize: 'default',
+      roles: ["ADMIN", "USER", "BUYER"],
+      tableSize: "default",
     }
-  } ,
+  },
   getters: {
     // your getters here, check the Offical Pinia above
     getReport: state => state.report,
@@ -23,7 +18,6 @@ export const useUsersStore = defineStore('users', {
   },
   actions: {
     async fetchReport() {
-
       this.loading = true
 
       const items = []
@@ -38,6 +32,6 @@ export const useUsersStore = defineStore('users', {
       this.users = items
       this.roles = roles
       this.loading = false
-    },    
-  }
+    },
+  },
 })

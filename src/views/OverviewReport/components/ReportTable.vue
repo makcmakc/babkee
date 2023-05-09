@@ -1,16 +1,16 @@
 <template>
-  <div class="pr-2 pl-2 bg-white rounded">
-    <div class="el-table__header flex justify-between items-center rounded-t-sm border-l-1 border-r-1 border-t-1 pl-3 pr-3 pt-2 pb-1 rounded-t-md">
-      <div class="el-table__title font-semibold pb-1 text-base">Daily Overview</div>
+  <div class="my-table">
+    <div class="my-table__header">
+      <div class="my-table__title" font-semibold pb-1 text-base>Daily Overview</div>
 
-      <div class="flex items-center justify-end">
-        <div style="height: 1.6rem" class="cursor-pointer" @click="updateReport">
+      <div flex items-center justify-end>
+        <div style="height: 1.6rem" cursor-pointer @click="updateReport">
           <el-icon><RefreshRight /></el-icon>
         </div>
         <div class="h-5 ml-4">
           <size-selector />
         </div>
-        <div style="height: 1.6rem" class="cursor-pointer ml-4">
+        <div style="height: 1.6rem" cursor-pointer ml-4>
           <columns-selector />
         </div>
       </div>
@@ -192,12 +192,26 @@ import ColumnsSelector from './ColumnsSelector.vue'
 
 
 <style lang="scss">
-.el-table__header {
-  // padding: 6px; bg-gray-100 bg-opacity-90
-  background: #F5F7FA;
-}
+.my-table {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  background: white;
+  border-radius: 0.25rem;
 
-.el-loading-spinner .path {
-  stroke: #67C23A;
+  &__header {
+    background: #F5F7FA;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+    border-top: 1px;
+    border-left: 1px;
+    border-right: 1px;
+    border-style: solid;
+    border-bottom: 0;
+    padding: .5rem .75rem .25rem .75rem;
+    border-color: #ebeef5;
+  }
 }
 </style>

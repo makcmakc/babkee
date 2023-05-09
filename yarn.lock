@@ -1278,10 +1278,22 @@
     "@unocss/core" "0.51.4"
     unconfig "^0.3.7"
 
+"@unocss/core@0.51.12":
+  version "0.51.12"
+  resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.51.12.tgz#4090deafb62787a7d46429616a9f3fd03905042a"
+  integrity sha512-H8mLy6ZKu9nGZe5jlHhLPIVwh2G3cCDSBGl5aIZJFI1qpmDC+Zb3iueBGigNpX75IzkjaGKZiK1WUWq8TShjtA==
+
 "@unocss/core@0.51.4":
   version "0.51.4"
   resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.51.4.tgz#f432ac54fc2d92d5b64b62374ab766eb13edb3b4"
   integrity sha512-glPBN989gJNNVzjulH6NlLAekBLuZbsFRIDqwZ1ZaoWY6teu8Z6uo3pqFCy+ibjxZSEha77BcnKfDzd2Hccsdw==
+
+"@unocss/extractor-arbitrary-variants@0.51.12":
+  version "0.51.12"
+  resolved "https://registry.yarnpkg.com/@unocss/extractor-arbitrary-variants/-/extractor-arbitrary-variants-0.51.12.tgz#c810dbe45857b3f5867206dde8540f4b80529cfd"
+  integrity sha512-/HJH48LbnzTzPkq7yNf+F8tpq7F8b0ibuv0Y/PFQdRN+5OBpRoVwzK7pnJccpiOFbWqlfIQ/ao0MgVc+321tUw==
+  dependencies:
+    "@unocss/core" "0.51.12"
 
 "@unocss/extractor-arbitrary-variants@0.51.4":
   version "0.51.4"
@@ -1325,6 +1337,14 @@
     "@iconify/utils" "^2.1.5"
     "@unocss/core" "0.51.4"
     ofetch "^1.0.1"
+
+"@unocss/preset-mini@0.51.12":
+  version "0.51.12"
+  resolved "https://registry.yarnpkg.com/@unocss/preset-mini/-/preset-mini-0.51.12.tgz#8dbadbc2c6286060dcc8a1f502136733a71151bd"
+  integrity sha512-3EXnY868WQS9RYLhJDRbiFznwJpRI4kOnwJb2a792JvZ8w3jh5X+elb3oHLLJ0Cus1F8evMKc+sEE6brQOnr1A==
+  dependencies:
+    "@unocss/core" "0.51.12"
+    "@unocss/extractor-arbitrary-variants" "0.51.12"
 
 "@unocss/preset-mini@0.51.4":
   version "0.51.4"
@@ -1373,6 +1393,14 @@
   dependencies:
     "@unocss/core" "0.51.4"
     "@unocss/preset-mini" "0.51.4"
+
+"@unocss/preset-wind@^0.51.12":
+  version "0.51.12"
+  resolved "https://registry.yarnpkg.com/@unocss/preset-wind/-/preset-wind-0.51.12.tgz#6a5050a4bcad6bb62e0dd971b33f1559151aea0e"
+  integrity sha512-4U/siVbmwPsg5msO1asTTWysBANgy8K9N1aREhRN66qNm/GZqp1wf0SkX2XWe2++naS4BkCWhdSAJG3Jov+/vQ==
+  dependencies:
+    "@unocss/core" "0.51.12"
+    "@unocss/preset-mini" "0.51.12"
 
 "@unocss/reset@0.51.4":
   version "0.51.4"

@@ -1,0 +1,25 @@
+
+.el-loading-spinner .path {
+  stroke: #67C23A;
+}
+
+.el-date-table td.today .el-date-table-cell__text {
+  color: #67C23A;
+}
+.el-date-table td.end-date .el-date-table-cell__text, .el-date-table td.start-date .el-date-table-cell__text {
+  background-color: #67C23A;
+}
+
+.el-date-table td.available:hover {
+  color: #67C23A;
+}
+
+.el-range-editor.is-active,
+.el-range-editor.is-active:hover {
+  box-shadow: 0 0 0 1px #67C23A inset;
+}
+
+.el-menu-item a {
+ text-decoration: none;
+}
+
