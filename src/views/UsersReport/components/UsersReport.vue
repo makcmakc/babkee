@@ -42,7 +42,12 @@
       </div>
     </div>
 
-    <el-table :size="tableSize" :data="tableData" border style="width: 100%">
+    <el-table
+      :size="tableSize"
+      :data="store.users"
+      border
+      style="width: 100%"
+      v-loading="store.loading">
       <el-table-column type="index" />
       <el-table-column label="Email" prop="email" />
       <el-table-column label="Roles" prop="roles" />
@@ -53,7 +58,7 @@
           <el-button
             size="small"
             type="primary"
-            @click="handleEdit(scope.$index, scope.row)"
+            @click="handleEdit(scope.row)"
             >Edit</el-button
           >
           <el-popconfirm
@@ -69,127 +74,50 @@
     </el-table>
   </div>
 
-  <el-dialog
-    v-model="dialogVisible"
-    title="New User"
-    width="50%"
-    :before-close="handleClose"
-  >
-    <el-form
-      label-width="120px"
-      label-position="top"
-      class="demo-ruleForm"
-      :size="formSize"
-    >
-      <el-form-item label="Name" prop="name">
-        <el-input></el-input>
-      </el-form-item>
+  <EditUser :isOpen="dialogVisible" />
 
-      <el-form-item label="Surname" prop="name">
-        <el-input></el-input>
-      </el-form-item>
-
-      <el-form-item label="Editor" prop="name">
-        <el-input></el-input>
-      </el-form-item>
-
-      <el-form-item label="Email" prop="name">
-        <el-input></el-input>
-      </el-form-item>
-
-      <el-form-item label="Password" prop="name">
-        <el-input></el-input>
-      </el-form-item>
-
-      <el-form-item label="Role" prop="resource">
-        <el-radio-group v-model="radio1" size="default">
-          <el-radio-button label="Admin"></el-radio-button>
-          <el-radio-button label="User"></el-radio-button>
-        </el-radio-group>
-      </el-form-item>
-
-      <el-form-item label="Description" prop="desc">
-        <el-input type="textarea"></el-input>
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" @click="submitForm(ruleFormRef)"
-          >Create</el-button
-        >
-        <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
-      </el-form-item>
-    </el-form>
-  </el-dialog>
+  <div text-right pr-2 mt-2>
+    <el-button type="success" @click="handleOpen()">
+      Create User
+    </el-button>
+  </div>
 </template>
 
 
 <script setup>
+import EditUser from './EditUser.vue'
 import {
   Refresh,
   Setting,
   RefreshRight,
   ScaleToOriginal,
 } from "@element-plus/icons-vue"
-import { ref } from "vue"
-import axios from "axios"
+import { onMounted, ref } from "vue"
+import { useUsersStore } from '../store/index'
 
-const handleEdit = (index, row) => {
-  console.log(index, row)
-}
-const handleDelete = (index, row) => {
-  console.log(index, row)
-}
 
-const handleClose = (index, row) => {
-  console.log(index, row)
-}
+let dialogVisible = ref(false)
 
-const firstName = ref()
-const lastName = ref()
 
-let info = ref(null)
+const store = useUsersStore()
 
-const submitHandler = () => {
-  axios
-    .get("https://api.coindesk.com/v1/bpi/currentprice.json")
-    .then((response) => (info = response.data.bpi))
+const handleEdit = (e) => {
+  // console.log(e)
+  dialogVisible = true
 }
 
-const dialogVisible = ref(false)
-
-let tableSize = ref("")
-
-const handleSize = (command) => {
-  tableSize = command
-  console.log(tableSize)
+const handleOpen = (e) => {
+  // console.log(e)
+  dialogVisible = true
 }
 
-const tableData = [
-  {
-    email: "admin@site.com",
-    roles: ["ROLE_ADMIN", "ROLE_USER"],
-    name: "",
-    surname: "",
-    image:
-      "https://www.talonx.com/wp-content/uploads/2014/06/Photography-Web-Design.jpg",
-    description: "",
-    editor: "draft",
-    created: "2016-05-01",
-    updated: "2016-05-01",
-  },
-  {
-    email: "editor@site.com",
-    roles: ["ROLE_USER"],
-    name: "",
-    surname: "",
-    image:
-      "https://www.talonx.com/wp-content/uploads/2014/06/Photography-Web-Design.jpg",
-    description: "",
-    editor: "draft",
-    created: "2016-05-01",
-    updated: "2016-05-01",
-  },
-]
+
+onMounted(async () => {
+  await store.fetchReport()
+})
+
+
+
 </script>
 
 <style scoped>

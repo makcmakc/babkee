@@ -14,7 +14,7 @@
       <el-checkbox label="Remember Me" name="type" />
       <el-link type="primary" :underline="false"> Forgot password </el-link>
     </div>
-    <el-form-item w-full>
+    <el-form-item w-full class="login-btn">
       <el-button type="primary" font-600 w-full @click="submitHandler">Sign In</el-button>
     </el-form-item>
   </el-form>
@@ -49,6 +49,10 @@ const submitHandler = async () => {
 </script>
 
 <style lang="scss">
+.login-btn {
+  width: 100% !important;
+}
+
 .el-form-item {
   .el-input__inner {
     color: #fff !important;

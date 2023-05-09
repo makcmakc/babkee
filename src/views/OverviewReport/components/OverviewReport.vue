@@ -2,7 +2,7 @@
   <div mt-2 flex flex-col>
     <FiltersForm />
     <ReportTable />
-    <OverviewReportGraphs />
+    <!-- <OverviewReportGraphs /> -->
   </div>
 </template>
 

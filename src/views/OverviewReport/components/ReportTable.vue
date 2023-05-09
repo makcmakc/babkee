@@ -133,7 +133,6 @@ import { useOverviewReportStore } from '../store/index'
 import SizeSelector from './SizeSelector.vue'
 import ColumnsSelector from './ColumnsSelector.vue'
 
-
   const store = useOverviewReportStore()
 
   onMounted(async () => {

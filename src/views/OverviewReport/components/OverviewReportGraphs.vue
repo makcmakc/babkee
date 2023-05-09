@@ -56,9 +56,12 @@
 
 <script setup>
 import { useAppStore } from "@/app/store/app.js"
+import { useOverviewReportStore } from '../store/index'
 import OverviewReportGraphDonut from "./OverviewReportGraphDonut.vue"
 
 const appStore = useAppStore()
+const store = useOverviewReportStore()
+const rows = store.getRows
 
 const variantColor = (i, transparency = 1) => {
   let c = appStore.variantColors;

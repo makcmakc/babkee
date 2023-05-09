@@ -1,18 +1,34 @@
 <template>
+  <div pa-2>
+
+  <div mt-4 ml-2>
+    <h2>TQ Dashboard</h2>
+  </div>
+
+  <div class="filters-form">
+    <FiltersForm />
+  </div>
+
+
+
   <div class="bar-charts">
-    <div class="bar-chart"  v-for="market in getGrossRevenueReport" :key="market.marketId">
+    <div class="bar-chart"  v-for="market in tq" :key="market.marketId">
       <div class="bar-chart__head">
-        <div class="bar-chart__market"> US</div>
+        <div class="bar-chart__market">{{ store.getMarketNameById(market.marketId) }}</div> 
         <div class="bar-chart__market-revenue">YGR: $471,636.87  </div>
       </div>
-      <BarChart :height="200" :chart-data="market" :chart-options="chartOptions"  />
+      <BarChart :height="200" :chart-data="buildGraph(market)" :chart-options="chartOptions"  /> {{ market}}
+      <!-- <BarChart :height="200" :chart-data="market" :chart-options="chartOptions"  />  {{ market.marketId }}--> 
     </div>
+  </div>
   </div>
 </template>
 
 <script setup>
+import { onMounted, computed } from "vue"
 import BarChart from "./BarChart.vue"
-
+import FiltersForm from "./FiltersForm.vue"
+import { useTQReportStore } from '../store/index'
 
 function selectColor(i, opacity = 0.8) {
   const colors = [ 
@@ -27,16 +43,57 @@ function selectColor(i, opacity = 0.8) {
   return colors[index]
 }
 
+const store = useTQReportStore()
+
+let report = []
+
+// let tq = []
+
+const tq = computed(() => {
+  return store.tqReport
+})
+
+
+const buildGraph = market => {
+  const labels = store.getLabels 
+  // const datasets = market?.datasets?.map((i) => {
+  //   console.log(i)
+  //   // const label = store.getThresholdNameById(i.tqThresholdId)
+  //   // console.log('I - ', i)
+  //   const data = labels.map(label => i.data.find(i => i.date === label)?.grossRevenue) 
+
+  //   console.log('asdas',labels)
+
+  //   return {
+  //     label,
+  //     data,
+  //     backgroundColor: selectColor(i.tqThresholdId - 2),
+  //   }
+  // })
+  return {
+    labels,
+    datasets: [],
+  }
+}
+
+
+
+onMounted(async () => {
+  // buildGraph()
+  report = store.fetchReport()
+  // console.log(tq)
+})
 
 const getGrossRevenueReport = [
   {
     marketId: 1,
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [{
-      label: 'My First Dataset',
+      label: 'My First Dataset',   
       data: [65, 59, 80, 81, 56, 55, 40],
       backgroundColor: [selectColor(1), selectColor(2), selectColor(3), selectColor(4), selectColor(5), selectColor(6)],
-      borderWidth: 1
+      borderWidth: 1,
+      tqThresholdId: 1,
     }]
   },
   {
@@ -45,6 +102,7 @@ const getGrossRevenueReport = [
     datasets: [{
       label: 'My First Dataset',
       data: [65, 59, 80, 81, 56, 55, 40],
+      tqThresholdId: 2,
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(255, 159, 64, 0.2)',
@@ -71,6 +129,7 @@ const getGrossRevenueReport = [
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [{
       label: 'My First Dataset',
+      tqThresholdId: 3,
       data: [65, 59, 80, 81, 56, 55, 40],
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
@@ -151,13 +210,17 @@ const getGrossRevenueReport = [
 </script>
 
 <style lang="scss" scoped>
-//::v-deep { }
+
+
+
+
+
 
 .bar-charts{
   display:flex;
   flex-wrap:wrap;
   width: 100%;
-  margin: 0 -6px;
+  // margin: 0 -6px;
 }
 
 .bar-chart{

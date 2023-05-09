@@ -1,6 +1,9 @@
 import { defineStore } from "pinia"
-import { getRowChildrenNameByType, rowChildrenSettings } from "./helpers"
+import { fireStore } from "@/firebase/firebaseInit"
+import { collection, getDocs } from "firebase/firestore"
 
+
+import { getRowChildrenNameByType, rowChildrenSettings } from "./helpers"
 
 const prepareOverviewReport = (overviewReport) => {
   overviewReport.rows.forEach((row) => {
@@ -45,65 +48,18 @@ const prepareRowChildren = (row) => {
 };
 
 
-const overviewReport = {
-  rows: [
-    {
-      date: '2022-06-22 - Wed',
-      id: '12987122',
-      name: 'Tom',
-      amount1: '234',
-      amount2: '3.2',
-      amount3: 10,
-      bought: 111.870,
-    },
-    {
-      date: '2022-06-22 - Wed',
-      id: '12987123',
-      name: 'Tom',
-      amount1: '165',
-      amount2: '4.43',
-      amount3: 12,
-      bought: 133.034,
-    },
-    {
-      date: '2022-06-22 - Wed',
-      id: '12987124',
-      name: 'Tom',
-      amount1: '324',
-      amount2: '1.9',
-      amount3: -1,
-      bought: 125.454,
-    },
-    {
-      date: '2022-06-22 - Wed',
-      id: '12987125',
-      name: 'Tom',
-      amount1: '621',
-      amount2: '2.2',
-      amount3: 17,
-      bought: 188.800,
-    },
-    {
-      date: '2022-06-22 - Wed',
-      id: '12987126',
-      name: 'Tom',
-      amount1: '539',
-      amount2: '4.1',
-      amount3: 15,
-      bought: 115.181,
-    },
-  ]
-}
-
-import { fireStore } from "@/firebase/firebaseInit"
-import { collection, getDocs } from "firebase/firestore"
-
 
 export const useOverviewReportStore = defineStore('overviewReport', {
   state: () => {
     return {
       loading: false,
-      filtersAvailable: {},
+      filtersAvailable: {
+        markets: [],
+        sources: [],
+        teams: [],
+        devices: [],
+        sites: []
+      },
       filters: {
         dateRange: [],
         marketIdIn:[],
@@ -185,8 +141,26 @@ export const useOverviewReportStore = defineStore('overviewReport', {
     getReport: state => state.report,
     getRows: state => state.report?.rows ?? [],
     getVisibleColumns: state => state.visibleColumns,
+    getSources: state => state.filters.sourceIdIn,
+
+    getFiltersAvailable: state => state.filtersAvailable,
   },
   actions: {
+
+    async fetchFiltersAvailable() {
+      const markets = await getDocs(collection(fireStore, "markets"))
+      markets.forEach(market => this.filtersAvailable.markets.push( { id: market.data().id, name: market.data().name } ) )
+      const sources = await getDocs(collection(fireStore, "sources"))
+      sources.forEach(source => this.filtersAvailable.sources.push({ id: source.data().id, name: source.data().name }) )
+      const teams = await getDocs(collection(fireStore, "teams"))
+      teams.forEach(team => this.filtersAvailable.teams.push({ id: team.data().id, name: team.data().name }) )
+      const devices = await getDocs(collection(fireStore, "devices"))
+      devices.forEach(device => this.filtersAvailable.devices.push({ id: device.data().id, name: device.data().name }) )
+      const sites = await getDocs(collection(fireStore, "sites"))
+      sites.forEach(site => this.filtersAvailable.sites.push({ id: site.data().id, name: site.data().name }) )   
+    },
+
+
     async fetchReport() {
 
       this.loading = true
